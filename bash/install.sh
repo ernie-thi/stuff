@@ -15,7 +15,9 @@ fi
 ### Update Packages
 
 echo "Following: Update packages"
-{ sudo $PKG update; sudo $PKG upgrade; }
+{ sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
 # TODO:  <17-02-23, programme die zu installieren sind einfügen> #
+
+./fancyprompt.sh
