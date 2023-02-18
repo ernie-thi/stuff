@@ -20,7 +20,7 @@ cd synth-shell
 
 # transferring config file to .config
 cd /home/$USER/stuff
-mkdir /home/$USER/.config/synth-shell
+#mkdir /home/$USER/.config/synth-shell
 cp ./dotfiles/synth-shell-prompt.config /home/$USER/.config/synth-shell/
 
 # Message to confirm installation
