@@ -20,4 +20,5 @@ echo "Updating packages completed successfully"
 
 # TODO:  <17-02-23, programme die zu installieren sind einfügen> #
 
+./bash_aliases.sh
 ./fancyprompt.sh
