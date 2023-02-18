@@ -8,7 +8,7 @@ elif [ -x "$(command -v dnf)" ]; then
 fi
 
 # install powerline fonts
-sudo $PKG install -y fonts-powerline
+sudo $PKG install -y powerline-fonts
 echo "Powerline-fonts installiert"
 
 # git clone synth-shell repo
@@ -18,7 +18,7 @@ cd synth-shell
 ./setup.sh
 
 # transferring config file to .config
-cp ../dotfiles/synth-shell-prompt.config /home/{$USER}/.config/synth-shell/
+cp ../dotfiles/synth-shell-prompt.config /home/$USER/.config/synth-shell/
 
 # Message to confirm installation
 echo "SynthShell wurde installiert (wirksam nach Shell Neustart)"
