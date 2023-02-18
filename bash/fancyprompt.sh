@@ -1,3 +1,24 @@
 #!/bin/bash
 
-echo "installiere synth-shell"
+# determine correct package manager command
+if [ -x "$(command -v apt)" ]; then
+    PKG="apt"
+elif [ -x "$(command -v dnf)" ]; then
+    PKG="dnf"
+fi
+
+# install powerline fonts
+sudo $PKG install -y fonts-powerline
+echo "Powerline-fonts installiert"
+
+# git clone synth-shell repo
+git clone https://github.com/andresgongora/synth-shell.git
+chmod +x synth-shell/setup.sh
+cd synth-shell
+./setup.sh
+
+# transferring config file to .config
+cp ../dotfiles/synth-shell-prompt.config /home/{$USER}/.config/synth-shell/
+
+# Message to confirm installation
+echo "SynthShell wurde installiert (wirksam nach Shell Neustart)"
