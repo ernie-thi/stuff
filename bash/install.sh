@@ -37,5 +37,5 @@ if [ $? -eq 0 ]
 then
     echo "fancyprompt erfolgreich ausgeführt" >> $log
 fi
-
+chmod +x neovim.sh
 ./neovim.sh
