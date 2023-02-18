@@ -18,7 +18,24 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
-# TODO:  <17-02-23, programme die zu installieren sind einfügen> #
+log="/home/$USER/log_install.txt"
+touch $log
 
 ./bash_aliases.sh
+if [ $? -eq 0 ]
+then
+    echo "bash aliases erfolgreich aktualisiert" >> $log
+fi
+
 ./fancyprompt.sh
+if [ $? -eq 0 ]
+then
+    echo "fancyprompt erfolgreich ausgeführt" >> $log
+fi
+
+if [ $? -eq 0 ]
+then
+    echo "fancyprompt erfolgreich ausgeführt" >> $log
+fi
+
+./neovim.sh
