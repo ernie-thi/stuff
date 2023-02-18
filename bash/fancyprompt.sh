@@ -13,7 +13,7 @@ echo "Powerline-fonts installiert"
 
 # git clone synth-shell repo
 cd /home/$USER
-git clone https://github.com/andresgongora/synth-shell.git
+git clone --recursive https://github.com/andresgongora/synth-shell.git
 chmod +x synth-shell/setup.sh
 cd synth-shell
 ./setup.sh
