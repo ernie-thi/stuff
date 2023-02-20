@@ -4,10 +4,10 @@
 PKG=''
 if [ -x "$(command -v apt)" ]; then
     echo -n "apt Paketmanager"
-    PKG="apt"
+    export PKG="apt"
 elif [ -x "$(command -v dnf)" ]; then 
     echo  "dnf Paketmanager"
-    PKG="dnf"
+    export PKG="dnf"
 else 
     echo "Paketverwaltungssystem nicht gefunden"
 fi
