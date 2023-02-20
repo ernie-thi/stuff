@@ -24,14 +24,14 @@ else
     if [ $? -eq 0 ]
     then
         echo "neovim appimage wurde erfolgreich installiert" >> $log
-        rm -rf $path
     else
         echo "neovim wurde nicht erfolgreich installiert" >> $log
     fi
     
     # add nvim binaries to PATH 
-    path="/usr/local/bin"
-    sudo mv nvim $path
+    bin="/usr/local/bin"
+    sudo mv nvim $bin
+    rm -rf $path
     
     ## import neovim config file
     if [ ! -d $nvimconfig ] 
