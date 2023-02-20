@@ -16,7 +16,7 @@ else
     fi
     cd $path && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
     sudo -s chmod +x nvim.appimage && mv nvim.appimage nvim
-    chown root:root nvim  
+    sudo chown root:root nvim  
     
     # test nvim command
     ./nvim
