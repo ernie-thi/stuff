@@ -57,6 +57,8 @@ if [ -$? -eq 0 ]
 then    
     while !command -v pip3
     do
+        echo $PKG
+        sleep 5
         sudo $PKG install python3-pip
     done
         pip3 install --user neovim
