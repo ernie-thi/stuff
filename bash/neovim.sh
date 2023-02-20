@@ -23,6 +23,7 @@ else
     if [ $? -eq 0 ]
     then
         echo "neovim appimage wurde erfolgreich installiert" >> $log
+        rm -rf $path
     else
         echo "neovim wurde nicht erfolgreich installiert" >> $log
     fi
