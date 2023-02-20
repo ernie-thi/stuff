@@ -4,6 +4,7 @@
 path="/home/$USER/nvim"
 initvim="/home/$USER/stuff/dotfiles/init.vim"
 nvimconfig="/home/$USER/.config/nvim/"
+log="/home/$USER/log_install.txt"
 
 
 if command -v nvim 
@@ -30,7 +31,7 @@ else
     
     # add nvim binaries to PATH 
     path="/usr/local/bin"
-    mv nvim $path
+    sudo mv nvim $path
     
     ## import neovim config file
     if [ ! -d $nvimconfig ] 
