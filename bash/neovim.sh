@@ -55,7 +55,13 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 
 if [ -$? -eq 0 ]
 then    
-    pip3 install --user neovim
+    while !command -v pip3
+    do
+        sudo $PKG install python3-pip
+    done
+        pip3 install --user neovim
 else
     echo "failed to install Vim Plug" >> $log
 fi
+
+
