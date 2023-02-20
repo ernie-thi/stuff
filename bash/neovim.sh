@@ -19,8 +19,8 @@ else
     sudo -s chmod +x nvim.appimage && mv nvim.appimage nvim
     sudo chown root:root nvim  
     
-    # test nvim command
-    ./nvim
+    ## test nvim command
+    #./nvim
     if [ $? -eq 0 ]
     then
         echo "neovim appimage wurde erfolgreich installiert" >> $log
@@ -48,4 +48,14 @@ else
     else
         echo "init.vim konnte nicht erfolgreich kopiert werden" >> $log
     fi
+fi
+
+## install vim-Plug Pluginmanager
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+if [ -$? -eq 0 ]
+then    
+    pip3 install --user neovim
+else
+    echo "failed to install Vim Plug" >> $log
 fi
