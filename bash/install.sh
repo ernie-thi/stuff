@@ -35,7 +35,7 @@ echo "Updating packages completed successfully"
 ./bash_aliases.sh >>$logfile 2>>$errorlog
 check_exit_status "bash_aliases"
 
-./fancyprompt.sh >>$logfile 2>>$errorlog
+./fancyprompt.sh  2>>$errorlog
 check_exit_status "fancyprompt.sh"
 
 chmod +x neovim.sh
