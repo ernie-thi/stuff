@@ -1,5 +1,18 @@
 #!/bin/bash
 
+
+logfile="/home/$USER/install.log"
+errorlog="/home/$USER/error_install.log"
+
+check_exit_status() {
+    if [[ $? -eq 0 ]]
+    then
+        echo "$1 successfully terminated"
+    else
+        echo "error in $1, check $errorlog for more infos"
+    fi
+}
+
 ### Which package manager to use
 PKG=''
 if [ -x "$(command -v apt)" ]; then
@@ -18,30 +31,31 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
-logfile="/home/$USER/install.log"
-errorlog="/home/$USER/error_install.log"
 
 ./bash_aliases.sh >>$logfile 2>>$errorlog
-if [ $? -eq 0 ]
-then
-    echo "bash aliases erfolgreich aktualisiert"
-else
-    echo "Error in bash alias.sh copying process, check $errorlog"
-fi
+check_exit_status "bash_aliases"
+#if [ $? -eq 0 ]
+#then
+#    echo "bash aliases erfolgreich aktualisiert"
+#else
+#    echo "Error in bash alias.sh copying process, check $errorlog"
+#fi
 
 ./fancyprompt.sh >>$logfile 2>>$errorlog
-if [ $? -eq 0 ]
-then
-    echo "fancyprompt erfolgreich ausgeführt"
-else
-    echo "Error in fancyprompt.sh, check $errorlog"
-fi
+check_exit_status "fancyprompt.sh"
+#if [ $? -eq 0 ]
+#then
+#    echo "fancyprompt erfolgreich ausgeführt"
+#else
+#    echo "Error in fancyprompt.sh, check $errorlog"
+#fi
 
 chmod +x neovim.sh
 ./neovim.sh >>$logfile 2>>$errorlog
-if [ $? -eq 0 ]
-then
-    echo "neovim erfolgreich installiert"
-else
-    echo "Error in neovim.sh ausführung, check $errorlog"
-fi
+check_exit_status "neovim.sh"
+#if [ $? -eq 0 ]
+#then
+#    echo "neovim erfolgreich installiert"
+#else
+#    echo "Error in neovim.sh ausführung, check $errorlog"
+#fi
