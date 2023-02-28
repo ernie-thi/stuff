@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "this script ran at $(date)"
+echo "this script ran at $(date)" >> crontest.log
