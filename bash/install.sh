@@ -21,27 +21,27 @@ echo "Updating packages completed successfully"
 logfile="/home/$USER/install.log"
 errorlog="/home/$USER/error_install.log"
 
-./bash_aliases.sh
+./bash_aliases.sh >>$logfile 2>>$errorlog
 if [ $? -eq 0 ]
 then
-    echo "bash aliases erfolgreich aktualisiert" >> $logfile
+    echo "bash aliases erfolgreich aktualisiert"
 else
-    echo "Error in bash alias.sh" >> $errorlog
+    echo "Error in bash alias.sh copying process, check $errorlog"
 fi
 
-./fancyprompt.sh
+./fancyprompt.sh >>$logfile 2>>$errorlog
 if [ $? -eq 0 ]
 then
-    echo "fancyprompt erfolgreich ausgeführt" >> $logfile
+    echo "fancyprompt erfolgreich ausgeführt"
 else
-    echo "Error in fancyprompt.sh" >> $errorlog
+    echo "Error in fancyprompt.sh, check $errorlog"
 fi
 
 chmod +x neovim.sh
-./neovim.sh
+./neovim.sh >>$logfile 2>>$errorlog
 if [ $? -eq 0 ]
 then
-    echo "neovim erfolgreich installiert" >> $logfile
+    echo "neovim erfolgreich installiert"
 else
-    echo "Error in neovim.sh ausführung" >> $errorlog
+    echo "Error in neovim.sh ausführung, check $errorlog"
 fi
