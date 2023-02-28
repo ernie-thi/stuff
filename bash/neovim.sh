@@ -1,5 +1,14 @@
 #!/bin/bash
 
+check_exit_status() {
+    if [[ $? -eq 0 ]]
+    then
+        echo "$1 successfully terminated"
+    else
+        echo "error in $1, check $errorlog for more infos"
+    fi
+}
+
 ## Install neovim from Appimage and also install Plugin Manager "VimPlug"
 path="/home/$USER/nvim"
 initvim="/home/$USER/stuff/dotfiles/init.vim"
@@ -14,14 +23,15 @@ then
 else
     if [ ! -d $path ]
     then
-        mkdir $path # Creating nvim dir
+        mkdir $path >>$logfile 2>>$errorlog # Creating nvim dir 
     fi
     # change dir to nvim and get nvim appimage from github
-    cd $path && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    cd $path && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage >>$logfile 2>>$errorlog
     # make appimage executable and rename it to nvim
     sudo -s chmod +x nvim.appimage && mv nvim.appimage nvim
     # change owner of nvim
     sudo chown root:root nvim  
+    check_exit_status "change owner of nvim appimage"
     
     ## test nvim command
     #./nvim
@@ -34,24 +44,24 @@ else
     
     # add nvim binaries to PATH 
     bin="/usr/local/bin"
-    sudo mv nvim $bin # move it to bin folder
+    sudo mv nvim $bin >>$logfile 2>>$errorlog# move it to bin folder
     rm -rf $path # delete installation dir since no more needed
     
     ## import neovim config file
     if [ ! -d $nvimconfig ] 
     then
-        mkdir -p $nvimconfig
+        mkdir -p $nvimconfig >>$logfile 2>>$errorlog
     fi
 
     # copy initfile
-    cp $initvim $nvimconfig
-
-    if [ $? -eq 0 ]
-    then
-        echo "init.vim wurde erfolgreich kopiert" >> $logfile
-    else
-        echo "init.vim konnte nicht erfolgreich kopiert werden" >> $errorlog
-    fi
+    cp $initvim $nvimconfig >>$logfile 2>>$errorlog
+    check_exit_status "copying of init.vim file"
+    #if [ $? -eq 0 ]
+    #then
+    #    echo "init.vim wurde erfolgreich kopiert" >> $logfile
+    #else
+    #    echo "init.vim konnte nicht erfolgreich kopiert werden" >> $errorlog
+    #fi
 fi
 
 ## install vim-Plug Pluginmanager

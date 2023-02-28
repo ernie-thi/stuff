@@ -1,5 +1,14 @@
 #!/bin/bash
 
+check_exit_status() {
+    if [[ $? -eq 0 ]]
+    then
+        echo "$1 successfully terminated"
+    else
+        echo "error in $1, check $errorlog for more infos"
+    fi
+}
+
 # determine correct package manager 
 if command -v apt 
 then
@@ -18,24 +27,26 @@ if ( $PKG list --installed powerline-fonts || $PKG list --installed fonts-powerl
 then
     echo "Powerline-fonts sind bereits installiert" >> $logfile
 else
-    sudo $PKG install -y powerline-fonts || sudo $PKG install -y fonts-powerline    # install fonts if necessary
-    if [ $? -eq 0 ]
-    then
-        echo "Powerline-fonts wurden erfolgreich installiert" >> $logfile
-    else
-        echo "Powerline-fonts konnten nicht erfolgreich installiert werden" >> $errorlog
-    fi
+    sudo $PKG install -y powerline-fonts || sudo $PKG install -y fonts-powerline >>$logfile 2>>$errorlog    # install fonts if necessary
+    check_exit_status "powerline-fonts"
+    #if [ $? -eq 0 ]
+    #then
+    #    echo "Powerline-fonts wurden erfolgreich installiert" >> $logfile
+    #else
+    #    echo "Powerline-fonts konnten nicht erfolgreich installiert werden" >> $errorlog
+    #fi
 fi
 
 # git clone synth-shell repo
 cd /home/$USER
 if [ ! -d ~/synth-shell ]       # check for existence of synthshell
 then
-    git clone --recursive https://github.com/andresgongora/synth-shell.git      # if not so, clone it
+    git clone --recursive https://github.com/andresgongora/synth-shell.git >>$logfile 2>>$errorlog      # if not so, clone it
     if [ $? -eq 0 ]
     then
         echo "Synthshell erfolgreich geklont" >> $logfile
-        chmod +x synth-shell/setup.sh       # make it executable
+        chmod +x synth-shell/setup.sh 2>>$errorlog # make it executable
+        check_exit_status "chmod synth-shell setup.sh"
         cd synth-shell                      # change dir
         # run setup script
         ./setup.sh

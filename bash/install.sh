@@ -34,28 +34,10 @@ echo "Updating packages completed successfully"
 
 ./bash_aliases.sh >>$logfile 2>>$errorlog
 check_exit_status "bash_aliases"
-#if [ $? -eq 0 ]
-#then
-#    echo "bash aliases erfolgreich aktualisiert"
-#else
-#    echo "Error in bash alias.sh copying process, check $errorlog"
-#fi
 
 ./fancyprompt.sh >>$logfile 2>>$errorlog
 check_exit_status "fancyprompt.sh"
-#if [ $? -eq 0 ]
-#then
-#    echo "fancyprompt erfolgreich ausgeführt"
-#else
-#    echo "Error in fancyprompt.sh, check $errorlog"
-#fi
 
 chmod +x neovim.sh
 ./neovim.sh >>$logfile 2>>$errorlog
 check_exit_status "neovim.sh"
-#if [ $? -eq 0 ]
-#then
-#    echo "neovim erfolgreich installiert"
-#else
-#    echo "Error in neovim.sh ausführung, check $errorlog"
-#fi
