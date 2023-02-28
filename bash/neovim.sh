@@ -17,7 +17,7 @@ nvimconfig="/home/$USER/.config/nvim/"
 logfile="/home/$USER/nvim.log"
 errorlog="$HOME/nvim_error.log"
 
-if command -v nvim 
+if command -v nvim # könnte man auch mit which nvim prüfen -f which nvim
 then
     echo "neovim ist schon installiert"
 else
