@@ -29,12 +29,6 @@ then
 else
     sudo $PKG install -y powerline-fonts || sudo $PKG install -y fonts-powerline >>$logfile 2>>$errorlog    # install fonts if necessary
     check_exit_status "powerline-fonts"
-    #if [ $? -eq 0 ]
-    #then
-    #    echo "Powerline-fonts wurden erfolgreich installiert" >> $logfile
-    #else
-    #    echo "Powerline-fonts konnten nicht erfolgreich installiert werden" >> $errorlog
-    #fi
 fi
 
 # git clone synth-shell repo
