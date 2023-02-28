@@ -18,24 +18,30 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
-log="/home/$USER/log_install.txt"
-touch $log
+logfile="/home/$USER/install.log"
+errorlog="/home/$USER/error_install.log"
 
 ./bash_aliases.sh
 if [ $? -eq 0 ]
 then
-    echo "bash aliases erfolgreich aktualisiert" >> $log
+    echo "bash aliases erfolgreich aktualisiert" >> $logfile
+else
+    echo "Error in bash alias.sh" >> $errorlog
 fi
 
 ./fancyprompt.sh
 if [ $? -eq 0 ]
 then
-    echo "fancyprompt erfolgreich ausgeführt" >> $log
+    echo "fancyprompt erfolgreich ausgeführt" >> $logfile
+else
+    echo "Error in fancyprompt.sh" >> $errorlog
 fi
 
-if [ $? -eq 0 ]
-then
-    echo "fancyprompt erfolgreich ausgeführt" >> $log
-fi
 chmod +x neovim.sh
 ./neovim.sh
+if [ $? -eq 0 ]
+then
+    echo "neovim erfolgreich installiert" >> $logfile
+else
+    echo "Error in neovim.sh ausführung" >> $errorlog
+fi
