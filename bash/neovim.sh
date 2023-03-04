@@ -4,6 +4,7 @@ check_exit_status() {
     if [[ $? -eq 0 ]]
     then
         echo "$1 successfully terminated"
+        sleep 1
     else
         echo "error in $1, check $errorlog for more infos"
     fi
@@ -77,12 +78,13 @@ then
         sleep 3 # because of debug reason
         sudo $PKG install -y python3-pip
     done
-        pip3 install --user neovim
 else
     echo "failed to install Vim Plug" #>> $errorlog
 fi
 
 ## install Plugins inside neovim
+pip3 install --user neovim
+check_exit_status "pip3 --user neovim successfull"
 nvim --headless +PlugInstall +qall
 
 
