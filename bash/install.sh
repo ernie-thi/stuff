@@ -39,5 +39,5 @@ check_exit_status "bash_aliases"
 check_exit_status "fancyprompt.sh"
 
 chmod +x neovim.sh
-./neovim.sh >>$logfile 2>>$errorlog
+./neovim.sh 2>>$errorlog
 check_exit_status "neovim.sh"
