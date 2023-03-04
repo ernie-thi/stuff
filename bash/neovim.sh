@@ -46,12 +46,12 @@ else
     # add nvim binaries to PATH 
     bin="/usr/local/bin"
     sudo mv nvim $bin #>>$logfile 2>>$errorlog# move it to bin folder
-    #rm -rf $path # delete installation dir since no more needed
+    rm -rf $path # delete installation dir since no more needed
     
     ## import neovim config file
     if [ ! -d $nvimconfig ] 
     then
-        mkdir -p $nvimconfig #>>$logfile 2>>$errorlog
+        mkdir -p $nvimconfig >>$logfile 2>>$errorlog
     fi
 
     # copy initfile
@@ -68,8 +68,6 @@ fi
 ## install vim-Plug Pluginmanager
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-#curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \ 
-#    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 if [ -$? -eq 0 ]
 then    
