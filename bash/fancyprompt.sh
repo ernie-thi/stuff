@@ -31,9 +31,15 @@ fi
 #then
 #    echo "Powerline-fonts sind bereits installiert" >> $logfile
 #else
-    sudo $PKG install -y powerline-fonts || sudo $PKG install -y fonts-powerline >>$logfile 2>>$errorlog    # install fonts if necessary
+if [[ "$PKG" == "dnf" ]]; then
+    sudo $PKG install -y powerline-fonts >>$logfile 2>>$errorlog
     check_exit_status "powerline-fonts"
-#fi
+elif [[ "$PKG" == "apt" ]]; then
+    sudo $PKG install -y fonts-powerline >>$logfile 2>>$errorlog    # install fonts if necessary
+    check_exit_status "powerline-fonts"
+else
+    echo "Packagemanager nicht erkannt!" >> $logfile
+fi
 
 # git clone synth-shell repo
 cd $HOME
