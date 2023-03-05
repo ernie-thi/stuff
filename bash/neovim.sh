@@ -83,6 +83,7 @@ else
 fi
 
 ## install Plugins inside neovim
+cd $HOME
 pip3 install --user neovim
 check_exit_status "pip3 --user neovim successfull"
 nvim --headless +PlugInstall +qall
