@@ -77,7 +77,7 @@ else
     # add nvim binaries to PATH 
     #bin="/usr/local/bin"
     #sudo mv nvim $bin #>>$logfile 2>>$errorlog# move it to bin folder
-    #rm -rf $path # delete installation dir since no more needed
+    rm -rf $path # delete installation dir since no more needed
     export PATH="$HOME/bin/:$PATH"
     
     ## import neovim config file
