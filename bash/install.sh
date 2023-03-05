@@ -1,15 +1,17 @@
 #!/bin/bash
 
 
-logfile="/home/$USER/install.log"
-errorlog="/home/$USER/error_install.log"
+logfile="$HOME/install.log"
+errorlog="$HOME/error_install.log"
 
 check_exit_status() {
     if [[ $? -eq 0 ]]
     then
         echo "$1 successfully terminated"
+        echo "$1 successfully terminated" >> $logfile
     else
         echo "error in $1, check $errorlog for more infos"
+        echo "error in $1" >> $errorlog
     fi
 }
 
@@ -32,12 +34,12 @@ echo "Following: Update packages"
 echo "Updating packages completed successfully"
 
 
-./bash_aliases.sh >>$logfile 2>>$errorlog
+./bash_aliases.sh 
 check_exit_status "bash_aliases"
 
-./fancyprompt.sh  2>>$errorlog
+./fancyprompt.sh
 check_exit_status "fancyprompt.sh"
 
 chmod +x neovim.sh
-./neovim.sh 2>>$errorlog
+./neovim.sh
 check_exit_status "neovim.sh"

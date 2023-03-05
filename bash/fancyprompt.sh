@@ -1,11 +1,18 @@
 #!/bin/bash
 
+# Creating logfile
+logfile="$HOME/log_fancyprompt.log"
+errorlog="$HOME/fancyprompt_error.log"
+
+
 check_exit_status() {
     if [[ $? -eq 0 ]]
     then
+        echo "$1 successfully terminated" >> $logfile
         echo "$1 successfully terminated"
     else
         echo "error in $1, check $errorlog for more infos"
+        echo "error in $1" >> $errorlog
     fi
 }
 
@@ -18,9 +25,6 @@ then
     PKG="dnf"
 fi
 
-# Creating logfile
-logfile="/home/$USER/log_fancyprompt.log"
-errorlog="$HOME/fancyprompt_error.log"
 
 # check for install powerline fonts or do so
 if ( $PKG list --installed powerline-fonts || $PKG list --installed fonts-powerline ) # check wheter correct fonts are yet installed
@@ -32,23 +36,24 @@ else
 fi
 
 # git clone synth-shell repo
-cd /home/$USER
-if [ ! -d ~/synth-shell ]       # check for existence of synthshell
+cd $HOME
+if [[ ! -d ~/synth-shell ]]       # check for existence of synthshell
 then
-    git clone --recursive https://github.com/andresgongora/synth-shell.git >>$logfile 2>>$errorlog      # if not so, clone it
+    git clone --recursive https://github.com/andresgongora/synth-shell.git 2>>$errorlog      # if not so, clone it
     if [ $? -eq 0 ]
     then
-        echo "Synthshell erfolgreich geklont" >> $logfile
+        check_exit_status "git clone synthshell "
         chmod +x synth-shell/setup.sh 2>>$errorlog # make it executable
         check_exit_status "chmod synth-shell setup.sh"
-        cd synth-shell                      # change dir
+        cd synth-shell          # change dir
         # run setup script
         ./setup.sh
         if [ $? -eq 0 ]
         then
-            echo "setup.sh wurde erfolgreich beendet" >> $logfile
-            cd /home/$USER/stuff        # switch to correct dir
-            cp ./dotfiles/synth-shell-prompt.config /home/$USER/.config/synth-shell/ # copy template of config
+            check_exit_status "setup.sh"
+            cd $HOME/stuff        # switch to correct dir
+            cp ./dotfiles/synth-shell-prompt.config $HOME/.config/synth-shell/ # copy template of config
+            check_exit_status "synthshell config file kopieren "
         else
             echo "setup.sh konnte nicht erfolgreich ausgeführt werden" >> $errorlog
         fi
