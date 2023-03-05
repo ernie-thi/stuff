@@ -27,7 +27,7 @@ fi
 
 
 # check for install powerline fonts or do so
-if ( $PKG list --installed powerline-fonts || $PKG list --installed fonts-powerline ) # check wheter correct fonts are yet installed
+if ( dpkg-query -W powerline-fonts || dpkg-query -W fonts-powerline) # check wheter correct fonts are yet installed
 then
     echo "Powerline-fonts sind bereits installiert" >> $logfile
 else

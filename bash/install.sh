@@ -36,7 +36,7 @@ echo "Updating packages completed successfully"
 sudo $PKG install -y git
 sudo $PKG install -y curl
 
-echo "export PATH=$(HOME)/bin:$(PATH)" >> $HOME/.bashrc
+echo "export PATH=$PATH:$HOME/bin" >> $HOME/.bashrc
 source $HOME/.bashrc
 
 ./bash_aliases.sh 
