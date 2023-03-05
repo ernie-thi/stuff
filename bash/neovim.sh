@@ -1,22 +1,27 @@
 #!/bin/bash
 
+## Install neovim from Appimage and also install Plugin Manager "VimPlug"
+path="$HOME/nvim"
+initvim="$HOME/stuff/dotfiles/init.vim"
+nvimconfig="$HOME/.config/nvim/"
+logfile="$HOME/nvim.log"
+errorlog="$HOME/nvim_error.log"
+
+
+## Function to check exit code of commands
 check_exit_status() {
     if [[ $? -eq 0 ]]
     then
         echo "$1 successfully terminated"
+        echo "$1 successfully done" >> $logfile
         sleep 1
     else
         echo "error in $1, check $errorlog for more infos"
+        echo "error in $1" >> $errorlog
+        sleep 1
     fi
 }
 
-## Install neovim from Appimage and also install Plugin Manager "VimPlug"
-path="/home/$USER/nvim"
-initvim="/home/$USER/stuff/dotfiles/init.vim"
-nvimconfig="/home/$USER/.config/nvim/"
-
-logfile="/home/$USER/nvim.log"
-errorlog="$HOME/nvim_error.log"
 
 if command -v nvim # könnte man auch mit which nvim prüfen -f which nvim
 then
@@ -24,35 +29,49 @@ then
 else
     if [ ! -d $path ]
     then
-        mkdir $path #>>$logfile 2>>$errorlog # Creating nvim dir 
+        mkdir $path # Creating nvim dir 
+        check_exit_status "Creating nvim directory in Homedir"
     fi
     # change dir to nvim and get nvim appimage from github
-    cd $path && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage #>>$logfile 2>>$errorlog
+    cd $path && curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+    check_exit_status "Changing to directory nvim and curling nvim.appimage"
+
     # make appimage executable and rename it to nvim
-    sudo -s chmod +x nvim.appimage && mv nvim.appimage nvim
-    # change owner of nvim
-    sudo chown root:root nvim  
-    sleep 5
-    check_exit_status "change owner of nvim appimage"
+    chmod +x nvim.appimage && mv nvim.appimage nvim
+    check_exit_status "Making nvim.appimage executable and renaming it into nvim"
+    ## change owner of nvim
+    #sudo chown root:root nvim  
+    #sleep 5
+    #check_exit_status "change owner of nvim appimage"
     
-    ## test nvim command
-    ./nvim
-    if [ $? -eq 0 ]
-    then
-        echo "neovim appimage wurde erfolgreich installiert" #>> $logfile
-    else
-        echo "neovim wurde nicht erfolgreich installiert" #>> $errorlog
+   # ## test nvim command
+   # ./nvim
+   # if [ $? -eq 0 ]
+   # then
+   #     echo "neovim appimage wurde erfolgreich installiert" #>> $logfile
+   # else
+   #     echo "neovim wurde nicht erfolgreich installiert" #>> $errorlog
+   # fi
+
+    # Creating bin directory and putting nvim there
+    if [[ ! -d $HOME/bin ]]; then
+       mkdir -p $HOME/bin 
+       check_exit_status "Created $HOME/bin directory "
     fi
+    mv nvim $HOME/bin/
+    check_exit_status "Moving nvim to bin directory"
     
     # add nvim binaries to PATH 
-    bin="/usr/local/bin"
-    sudo mv nvim $bin #>>$logfile 2>>$errorlog# move it to bin folder
-    rm -rf $path # delete installation dir since no more needed
+    #bin="/usr/local/bin"
+    #sudo mv nvim $bin #>>$logfile 2>>$errorlog# move it to bin folder
+    #rm -rf $path # delete installation dir since no more needed
+    export PATH="$HOME/bin/:$PATH"
     
     ## import neovim config file
     if [ ! -d $nvimconfig ] 
     then
-        mkdir -p $nvimconfig >>$logfile 2>>$errorlog
+        mkdir -p $nvimconfig
+        check_exit_status "importing neovim config file "
     fi
 
     # copy initfile
@@ -79,7 +98,8 @@ then
         sudo $PKG install -y python3-pip
     done
 else
-    echo "failed to install Vim Plug" #>> $errorlog
+    echo "Failed to install vim Plug Plugin manager"
+    echo "failed to install Vim Plug" >> $errorlog
 fi
 
 ## install Plugins inside neovim
@@ -87,5 +107,3 @@ cd $HOME
 pip3 install --user neovim
 check_exit_status "pip3 --user neovim successfull"
 nvim --headless +PlugInstall +qall
-
-
