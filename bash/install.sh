@@ -33,6 +33,11 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
+sudo $PKG install -y git
+sudo $PKG install -y curl
+
+echo "export PATH=$(HOME)/bin:$(PATH)" >> $HOME/.bashrc
+source $HOME/.bashrc
 
 ./bash_aliases.sh 
 check_exit_status "bash_aliases"
