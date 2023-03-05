@@ -8,6 +8,19 @@ logfile="$HOME/nvim.log"
 errorlog="$HOME/nvim_error.log"
 
 
+### Which package manager to use
+PKG=''
+if [ -x "$(command -v apt)" ]; then
+    echo -n "apt Paketmanager"
+    export PKG="apt"
+elif [ -x "$(command -v dnf)" ]; then 
+    echo  "dnf Paketmanager"
+    export PKG="dnf"
+else 
+    echo "Paketverwaltungssystem nicht gefunden"
+fi
+
+
 ## Function to check exit code of commands
 check_exit_status() {
     if [[ $? -eq 0 ]]
@@ -27,7 +40,7 @@ if command -v nvim # könnte man auch mit which nvim prüfen -f which nvim
 then
     echo "neovim ist schon installiert"
 else
-    if [ ! -d $path ]
+    if [[ ! -d $path ]]
     then
         mkdir $path # Creating nvim dir 
         check_exit_status "Creating nvim directory in Homedir"
@@ -68,7 +81,7 @@ else
     export PATH="$HOME/bin/:$PATH"
     
     ## import neovim config file
-    if [ ! -d $nvimconfig ] 
+    if [[ ! -d $nvimconfig ]] 
     then
         mkdir -p $nvimconfig
         check_exit_status "importing neovim config file "
@@ -89,7 +102,7 @@ fi
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 
-if [ -$? -eq 0 ]
+if [[ -$? -eq 0 ]]
 then    
     while ! command -v pip3 # check if pip3 is installed
     do
