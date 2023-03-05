@@ -33,8 +33,8 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
-sudo $PKG install -y git
-sudo $PKG install -y curl
+sudo $PKG install -y git curl neofetch \
+    pwgen kitty sxhkd inxi hwinfo polybar htop tree
 
 echo "export PATH=$PATH:$HOME/bin" >> $HOME/.bashrc
 source $HOME/.bashrc
