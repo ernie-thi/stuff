@@ -15,7 +15,23 @@ set cursorline	"highlight current cursorline
 set noswapfile
 set nowrap
 set relativenumber
-set clipboard=unnamedplus
+"set clipboard+=unnamedplus
+
+
+"Clipboard mapping"
+"
+"" Copy to clipboard
+vnoremap  <C-y>  "+y
+nnoremap  <C-Y>  "+yg_
+nnoremap  <C-y>  "+y
+"nnoremap  <leader>yy  "+yy
+
+" " Paste from clipboard
+nnoremap <C-p> "+p
+nnoremap <C-P> "+P
+vnoremap <C-p> "+p
+vnoremap <C-P> "+P
+
 
 "Plugins
 call plug#begin('~/.local/share/nvim/plugged')
@@ -80,3 +96,8 @@ let g:vimtex_compiler_latexmk = {
     \    '-interaction=nonstopmode',
     \ ],
     \}
+" Config for colorizer
+"
+lua require 'colorizer'.setup()
+
+lua require 'colorizer'.setup(nil, { css = true; })
