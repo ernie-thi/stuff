@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -x
 
 logfile="$HOME/install.log"
 errorlog="$HOME/error_install.log"
@@ -33,8 +34,16 @@ echo "Following: Update packages"
 { sudo $PKG update -y; sudo $PKG upgrade -y; }
 echo "Updating packages completed successfully"
 
-sudo $PKG install -y git curl neofetch \
-    pwgen kitty sxhkd inxi hwinfo polybar htop tree
+# TODO: The array with for loop construct has not been tested yet <04-04-23, ernie> #
+### Array with Packages that have to be installed
+packages=(git curl neofetch pwgen kitty sxhkd inxi hwinfo polybar htop tree xclip \
+            spotify-client ncdu inkscape imagemagick)
+
+### Install each package
+for package in "${packages[@]}"; do
+    sudo $PKG install -y $package 
+    check_exit_status() "Installation of $package"
+done
 
 echo "export PATH=$PATH:$HOME/bin" >> $HOME/.bashrc
 source $HOME/.bashrc
