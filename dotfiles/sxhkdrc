@@ -2,6 +2,10 @@
 # wm independent hotkeys
 #
 
+#screenshotting 
+XF86WakeUp + Print
+	$HOME/gh/stuff/bash/screenshot.sh
+
 # terminal emulator
 super + Return
 	kitty
@@ -20,7 +24,7 @@ super + Escape
 
 # quit/restart bspwm
 super + alt + {q,r}
-	bspc {quit,wm -r}
+	bspc {quit,wm -r}
 
 # close and kill
 super + {_,shift + }w
