@@ -15,6 +15,7 @@ set cursorline	"highlight current cursorline
 set noswapfile
 set nowrap
 set relativenumber
+set termguicolors
 "set clipboard+=unnamedplus
 
 
@@ -43,13 +44,20 @@ Plug 'itchyny/lightline.vim'
 Plug 'lervag/vimtex'
 Plug 'honza/vim-snippets'
 Plug 'EdenEast/nightfox.nvim'
+Plug 'norcalli/nvim-colorizer.lua'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'arcticicestudio/nord-vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 "Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 call plug#end()
 
+"Activating nvim-colorizer.lua
+
+lua require 'colorizer'.setup()
+lua require 'colorizer'.setup(nil, { css = true; })
+
 "Colorscheme
-colorscheme tokyonight-moon
+colorscheme carbonfox     
 
 "let g:plug_timeout = 300 
 " Snippets triggers
@@ -63,25 +71,6 @@ let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/mySnippets']
 "Vimtex Configuration
 filetype plugin on
 let g:tex_flavor='latex'
-"Braucht man alles nur auf fedora bzw unter wayland"
-""function! ZathuraHook() dict abort 
-"""  if self.xwin_id <= 0 | return | endif
-"""
-"""  silent call system('xdotool windowactivate ' . self.xwin_id . ' --sync')
-"""  silent call system('xdotool windowraise ' . self.xwin_id)
-"""endfunction
-""function! ZathuraHook() abort
-""  if exists('b:vimtex.viewer.xwin_id') && b:vimtex.viewer.xwin_id <= 0
-""    silent call system('xdotool windowactivate ' . b:vimtex.viewer.xwin_id . ' --sync')
-""    silent call system('xdotool windowraise ' . b:vimtex.viewer.xwin_id)
-""  endif
-""endfunction
-""
-""augroup init.vim_vimtex
-""  autocmd!
-""  autocmd User VimtexEventView call ZathuraHook()
-""augroup END
-"let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
 set conceallevel=2
@@ -96,8 +85,7 @@ let g:vimtex_compiler_latexmk = {
     \    '-interaction=nonstopmode',
     \ ],
     \}
-" Config for colorizer
-"
-lua require 'colorizer'.setup()
 
-lua require 'colorizer'.setup(nil, { css = true; })
+"Indent-blankline setup
+let g:indent_blankline_filetype = ['vim', 'tex', 'html', 'c', 'cpp', 'java', 'python']
+highlight IndentBlanklineChar guifg=#755f05 gui=nocombine
