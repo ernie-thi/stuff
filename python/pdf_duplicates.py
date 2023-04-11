@@ -15,3 +15,7 @@ os.chdir(destination)
 files = os.listdir()
 print("files: ------------")
 [print(i) for i in files]
+# TODO: pdf files filtern  <12-04-23,ernie> #
+# TODO: pdf files auf duplikate pruefen <12-04-23,ernie> #
+# TODO: dann nur noch die betroffenen files an send2trash senden <12-04-23,ernie> #
+# TODO: und die nicht betroffenen in ein zip packen <12-04-23,ernie> #
