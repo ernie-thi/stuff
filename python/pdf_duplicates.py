@@ -11,7 +11,7 @@ p = Path.home()
 
 print(p)
 print(type(p))
-if sys.argv[1] == '':
+if len(sys.argv) == 1:
     sys.exit("Include path to folder which contains pdf files as first argument passed when calling")
 
 destination = str(sys.argv[1])
