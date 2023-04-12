@@ -7,14 +7,13 @@ import sys
 import re
 from pathlib import Path
 
-p = Path.home()
-
-print(p)
-print(type(p))
-if len(sys.argv) == 1:
-    sys.exit("Include path to folder which contains pdf files as first argument passed when calling")
-
-destination = str(sys.argv[1])
+home = Path.home()
+destination = input('Input destination Folder to search for pdf duplicates, like $HOME/your/path: ')
+#if len(sys.argv) == 1:
+#    sys.exit("Include path to folder which contains pdf files as first argument passed when calling")
+#destination = str(sys.argv[1])
+if not destination:
+    sys.exit("No Path inserted, Program terminated.")
 os.chdir(destination)
 files = os.listdir()
 print("files: ------------")
@@ -25,7 +24,8 @@ for file in files:
     if re.search(r'\.pdf$', file):
         pdf_files.append(file)
 
-print("PDF-Files:----------")
+print("""PDF-Files:--------------------------------------------------------------------------------------------------------------------------
+        -----------------------------------------------------------------------------""")
 [ print(i) for i in pdf_files ]
 # TODO: pdf files filtern  <12-04-23,ernie> #
 # TODO: pdf files auf duplikate pruefen <12-04-23,ernie> #
