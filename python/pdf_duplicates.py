@@ -20,13 +20,17 @@ print("files: ------------")
 [print(i) for i in files]
 
 pdf_files = []
+pattern = re.compile(r'([A-Za-z0-9]+.+)\.pdf$')
 for file in files:
-    if re.search(r'\.pdf$', file):
+    #if re.search(r'\.pdf$', file) and :
+    if pattern.search(file) and pattern.sub(r'\1',file):
         pdf_files.append(file)
 
 print("""PDF-Files:--------------------------------------------------------------------------------------------------------------------------
         -----------------------------------------------------------------------------""")
+secondPdfs = []
 [ print(i) for i in pdf_files ]
+print(len(pdf_files))
 # TODO: pdf files filtern  <12-04-23,ernie> #
 # TODO: pdf files auf duplikate pruefen <12-04-23,ernie> #
 # TODO: dann nur noch die betroffenen files an send2trash senden <12-04-23,ernie> #
