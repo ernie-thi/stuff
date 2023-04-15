@@ -24,7 +24,7 @@ if not destination:
 os.chdir(destination)
 files = os.listdir()
 print("files: ------------")
-[print(i) for i in files]       # kontroll ausgabe
+#[print(i) for i in files]       # kontroll ausgabe
 
 # declaring empty list for pdf files
 pdf_files = []
@@ -35,8 +35,8 @@ for file in files:
         pdf_files.append(file)          #appending pdf file to list
 print("""PDF-Files:--------------------------------------------------------------------------------------------------------------------------
         -----------------------------------------------------------------------------""")
-pdf_files = list([str(i) for i in pdf_files])
-[print(i) for i in pdf_files]
+#pdf_files = list([str(i) for i in pdf_files])
+#[print(i) for i in pdf_files]
 # declare a dict for pdf 
 print("-------------------SORTIEREN---------------------------------------------------------------------------------")
 pdf_dict = {}
@@ -59,16 +59,16 @@ for file in pdf_files:
         else:
             pdf_dict[original_basename] = [file]
 
-[print(i) for i in basenames]
+#[print(i) for i in basenames]
 #pdf_files.sort()
 print("KEY VALUE PAARE -----------------------------------------------------------------------------------------------")
 for key,value in pdf_dict.items():
     print(f"{key} -----> {len(value)}")
+
 # Create duplicate Directory or check if already existing
 duplicate_path = os.path.join(destination, "Duplikate_pdfs")
 if not os.path.exists(duplicate_path):
     os.makedirs(duplicate_path)
-# TODO: ordner mit duplikaten erstellen oder zu send2trash senden <12-04-23,ernie> #
 
 # Iterate over pdf_dict
 for key in pdf_dict.keys():
@@ -78,10 +78,9 @@ for key in pdf_dict.keys():
         print(f"der größte ist: {largest_file}")
         # moving the smaller files to dup folder
         for smaller in pdf_dict[key]:
-            if not largest_file:
-                #shutil.move(smaller, os.path.join(duplicate_path, smaller))
+            if smaller != largest_file:
+                shutil.move(smaller, os.path.join(duplicate_path, smaller))
                 print(f"Es wurde File {smaller} verschoben") 
 
 print(f"Duplicate pdf files moved to : {duplicate_path}")
-#TODO: fix last errors
-# funktioniert bis jetzt so 
+#TODO: Maybe add Date of creation to duplicate folder, or log file which tells when programm last ran
