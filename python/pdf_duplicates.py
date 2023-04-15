@@ -72,7 +72,7 @@ if not os.path.exists(duplicate_path):
 
 # Iterate over pdf_dict and ask user whether duplicate files should be moved then
 move_duplicates = int(input("Do you want to move the duplicates to a seperate folder now? Insert 1 for YES and 0 for NO: "))
-if move_duplicates:
+if move_duplicates == 1:
     for key in pdf_dict.keys():
         if len(pdf_dict[key]) > 1:
             # determining largest file of lists
