@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Bitwarden
+Comment=A safe open source Password manager
+GenericName=Password Manager
+Exec="/usr/share/bitwarden/Bitwarden"
+Icon=/home/raphael/.local/share/logos_applications/bitwarden_logo.jpg
+Type=Application
+Categories=Security;
+Path=/usr/bin
+X-Desktop-File-Install-Version=0.26
+
