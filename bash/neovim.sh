@@ -1,8 +1,9 @@
 #!/bin/bash
 
+set -x
 ## Install neovim from Appimage and also install Plugin Manager "VimPlug"
 path="$HOME/nvim"
-initvim="$HOME/stuff/dotfiles/init.vim"
+initvim="$HOME/gh/stuff/dotfiles/init.vim"
 nvimconfig="$HOME/.config/nvim/"
 logfile="$HOME/nvim.log"
 errorlog="$HOME/nvim_error.log"
