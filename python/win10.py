@@ -1,5 +1,6 @@
 import os
 import sys
+import requests
 
 def install_applications():
   """Installs the following applications on Windows 10:
@@ -48,7 +49,7 @@ def install_applications():
   # Install all applications.
   for application in installers:
     print(f"Installing {application}...")
-    start(f"{application}.exe")
+    os.start(f"{application}.exe")
 
   # Check if all applications were installed successfully.
   for application in ["discord", "solidworks", "microsoft office 365", "anki", "zoom", "steam", "balena etcher", "microsoft teams", "obs studio", "spotify", "ultimaker cura", "visual studio code"]:
