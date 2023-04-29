@@ -35,7 +35,7 @@ echo "Following: Update packages"
 echo "Updating packages completed successfully"
 
 ### Array with Packages that have to be installed
-packages=(git curl cheese v4l-utils guvcview neofetch pwgen kitty sxhkd inxi hwinfo polybar htop tree xclip \
+packages=(git curl zathura zathura-pdf-poppler xdotool cheese v4l-utils guvcview neofetch pwgen kitty sxhkd inxi hwinfo polybar htop tree xclip \
             spotify-client ncdu inkscape imagemagick)
 
 ### Install each package

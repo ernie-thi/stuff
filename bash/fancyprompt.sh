@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 # Creating logfile
 logfile="$HOME/log_fancyprompt.log"
 errorlog="$HOME/fancyprompt_error.log"
