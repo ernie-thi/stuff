@@ -57,7 +57,7 @@ then
         if [ $? -eq 0 ]
         then
             check_exit_status "setup.sh"
-            cd $HOME/stuff        # switch to correct dir
+            cd $HOME/gh/stuff        # switch to correct dir
             cp ./dotfiles/synth-shell-prompt.config $HOME/.config/synth-shell/ # copy template of config
             check_exit_status "synthshell config file kopieren "
         else
