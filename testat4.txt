@@ -1,0 +1,73 @@
+*****************
+*  1 - Trigger  *
+*****************
+
+i) erstelle reservation-Tabelle
+
+    CREATE TABLE reservation (
+         reservation_id SERIAL PRIMARY KEY,
+         customer_id INT NOT NULL,
+         inventory_id INT NOT NULL,
+         reserve_date DATE NOT NULL,
+         FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+         FOREIGN KEY (inventory_id) REFERENCES inventory(inventory_id)
+     );
+
+ii) Trigger: Kunde möchte neuen Film reservieren aber hat schon 5 reserviert:
+
+CREATE OR REPLACE FUNCTION check_reservation_limit() 
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (SELECT COUNT(*) FROM reservation WHERE customer_id = NEW.customer_id) >= 5 THEN
+        RAISE EXCEPTION 'Customer has already reserved 5 dvds';
+    ELSE
+        RETURN NEW;
+    END IF;
+END; $$
+LANGUAGE plpgsql;
+
+CREATE TRIGGER reservation_limit
+BEFORE INSERT ON reservation
+FOR EACH ROW
+EXECUTE FUNCTION check_reservation_limit();
+
+****************************
+*  2 - Serialisierbarkeit  *
+****************************
+i)
+    H2 = r3(x) r1(x) w2(x) r1(y) w1(y) r3(y) r2(z) r3(z) c3 w2(z) c2 c1
+
+    Abhängigkeiten:
+
+        - r3(x) → r1(x)
+        - r3(x) → w2(x)
+        - r1(y) → w1(y)
+        - r3(y) → r1(y)
+        - r3(z) → r2(z)
+        - r3(z) → w2(z)
+        => Konfliktzyklus, nicht serialisierbar
+
+ii) 
+    H3 = w2(x) r1(x) r1(y) r3(x) w1(y) c1 r2(z) r3(y) r3(z) w2(z) c2 c3
+
+    Abhängigkeiten:
+
+        - w2(x) → r1(x)
+        - w2(x) → r3(x)
+        - r1(y) → w1(y)
+        - r3(z) → r2(z)
+        - r3(z) → w2(z)
+        => kein Konfliktzyklus, ist serialisierbar.
+        mögliche Reihenfolge: T2, T1, T3.
+    
+iii)
+    H4 = r1(x) r2(y) w1(z) r3(z) w2(y) w1(x) c1 r3(y) w2(x) c3 c2
+
+    Abhängigkeiten:
+
+        - r1(x) → w1(x)
+        - r2(y) → w2(y)
+        - r2(y) → r3(y)
+        - w1(z) → r3(z)
+        - r3(y) → w2(x)
+        => Konfliktzyklus, nicht serialisierbar: (T1 -> T2 -> T3 -> T1)
