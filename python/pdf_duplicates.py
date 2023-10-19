@@ -21,27 +21,36 @@ class pdfDuplicates():
         self.destination = str(input('Input destination Folder to search for pdf duplicates, like $HOME/your/path: ') or "/home/raphael/Downloads/")
         self.duplicate_exist = 0
         self.move_duplicates = 0
+        self.files = [] # Declaring empty list for files
 
-    # In case no path given
-    if not destination:             
-        sys.exit("No Path inserted, Program terminated.")
+        # declaring empty list for pdf files and regex patterns
+        self.pdf_files = []
 
-    # change to destination directory and grab containing files
-    os.chdir(destination)
-    files = os.listdir()
-    print("files: ------------")
+    def _changeDir(self):
+        try:
+            # change to destination directory and grab containing files
+            os.chdir(self.destination)
+            self.files = os.listdir()
+            print("files: ------------")
+        except:
+            # In case no path given
+            if not self.destination:             
+                sys.exit("No Path inserted, Program terminated.")
+            else:
+                print("Changing directory did not work for some reason")
 
-    # declaring empty list for pdf files and regex patterns
-    pdf_files = []
-    pattern = re.compile(r'([A-Za-z0-9]+.+)(\s\(\d+\))*\.pdf$', re.IGNORECASE)
-    basenamepattern = re.compile(r'(\s\(\d+\))$')
-
-    for file in files:
-        if pattern.search(file):
-            pdf_files.append(file)          #appending pdf file to list
-    print("""FOUND PDF-Files:---------------------------------------------------------------------------------------""")
-    [print(pdf) for pdf in pdf_files]
-
+    def _prepareRegex(self):
+        self.pattern = re.compile(r'([A-Za-z0-9]+.+)(\s\(\d+\))*\.pdf$', re.IGNORECASE)
+        self.basenamepattern = re.compile(r'(\s\(\d+\))$')
+        
+    def _appendPDFs(self):
+        for file in self.files:
+            if self.pattern.search(file):
+                self.pdf_files.append(file)          #appending pdf file to list
+        print("""FOUND PDF-Files:---------------------------------------------------------------------------------------""")
+        [print(pdf) for pdf in self.pdf_files]
+        
+# TODO: ab hier weiter machen        
     # declare a dict for pdf and sorting process
     print("--------------------------------------SORTING--------------------------------------------------------------")
     pdf_dict = {}
@@ -61,17 +70,17 @@ class pdfDuplicates():
     for key,value in pdf_dict.items():
         # To determine whether there were duplicates
         if len(value) > 1:
-            duplicate_exist += 1
-            if duplicate_exist == 1:
+            self.duplicate_exist += 1
+            if self.duplicate_exist == 1:
                 print("KEY VALUE PAIRS: -----------------------------------------------------------------------------------------------")
             print(f"{key} ----------------------------------> {len(value)}")
 
     #TODO: Maybe also print a statement to inform the user (in case) that no duplicate file was found at all
-    if not duplicate_exist:
+    if not self.duplicate_exist:
         sys.exit("No duplicate PDF-Files, programm aborted")
 
     # Create duplicate Directory or check if already existing
-    duplicate_path = os.path.join(destination, "Duplikate_pdfs")
+    duplicate_path = os.path.join(self.destination, "Duplikate_pdfs")
     if not os.path.exists(duplicate_path):
         os.makedirs(duplicate_path)
 
