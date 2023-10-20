@@ -52,32 +52,35 @@ class pdfDuplicates():
         
 # TODO: ab hier weiter machen        
     # declare a dict for pdf and sorting process
-    print("--------------------------------------SORTING--------------------------------------------------------------")
-    pdf_dict = {}
-    for file in pdf_files:
-        basename, ext = os.path.splitext(file)
-        match = pattern.search(file)
-        if match:
-            # save filename without duplicate counter
-            original_basename = re.sub(basenamepattern,'',basename)
-            # if filename is already existent in our dictionary add it to key:list
-            if original_basename in pdf_dict:
-                pdf_dict[original_basename].append(file)
-            # when filename is not part of dict yet, add it as new entry
-            else:
-                pdf_dict[original_basename] = [file]
+    def _doSorting(self):
 
-    for key,value in pdf_dict.items():
-        # To determine whether there were duplicates
-        if len(value) > 1:
-            self.duplicate_exist += 1
-            if self.duplicate_exist == 1:
-                print("KEY VALUE PAIRS: -----------------------------------------------------------------------------------------------")
-            print(f"{key} ----------------------------------> {len(value)}")
+        print("--------------------------------------SORTING--------------------------------------------------------------")
+        pdf_dict = {}
+        for file in self.pdf_files:
+            basename, ext = os.path.splitext(file)
+            match = self.pattern.search(file)
+            if match:
+                # save filename without duplicate counter
+                original_basename = re.sub(self.basenamepattern,'',basename)
+                # if filename is already existent in our dictionary add it to key:list
+                if original_basename in pdf_dict:
+                    pdf_dict[original_basename].append(file)
+                # when filename is not part of dict yet, add it as new entry
+                else:
+                    pdf_dict[original_basename] = [file]
 
-    #TODO: Maybe also print a statement to inform the user (in case) that no duplicate file was found at all
-    if not self.duplicate_exist:
-        sys.exit("No duplicate PDF-Files, programm aborted")
+    def _checkDuplicates(self):
+        for key,value in self.pdf_dict.items():
+            # To determine whether there were duplicates
+            if len(value) > 1:
+                self.duplicate_exist += 1
+                if self.duplicate_exist == 1:
+                    print("KEY VALUE PAIRS: -----------------------------------------------------------------------------------------------")
+                print(f"{key} ----------------------------------> {len(value)}")
+
+        #TODO: Maybe also print a statement to inform the user (in case) that no duplicate file was found at all
+        if not self.duplicate_exist:
+            sys.exit("No duplicate PDF-Files, programm aborted")
 
     # Create duplicate Directory or check if already existing
     duplicate_path = os.path.join(self.destination, "Duplikate_pdfs")
