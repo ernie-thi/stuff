@@ -18,7 +18,8 @@ class pdfDuplicates():
         """ Initialize attributes """
         # Grab home directory and directory from which filtering to be executed
         self.home = Path.home()
-        self.destination = str(input('Input destination Folder to search for pdf duplicates, like $HOME/your/path: ') or "/home/raphael/Downloads/")
+        #self.destination = str(input('Input destination Folder to search for pdf duplicates, like $HOME/your/path: ') or "/home/raphael/Downloads/")
+        self.destination = ""
         self.duplicate_exist = 0
         self.move_duplicates = 0
         self.files = [] # Declaring empty list for files
