@@ -50,12 +50,11 @@ class pdfDuplicates():
         print("""FOUND PDF-Files:---------------------------------------------------------------------------------------""")
         [print(pdf) for pdf in self.pdf_files]
         
-# TODO: ab hier weiter machen        
     # declare a dict for pdf and sorting process
     def _doSorting(self):
 
         print("--------------------------------------SORTING--------------------------------------------------------------")
-        pdf_dict = {}
+        self.pdf_dict = {}
         for file in self.pdf_files:
             basename, ext = os.path.splitext(file)
             match = self.pattern.search(file)
@@ -63,11 +62,11 @@ class pdfDuplicates():
                 # save filename without duplicate counter
                 original_basename = re.sub(self.basenamepattern,'',basename)
                 # if filename is already existent in our dictionary add it to key:list
-                if original_basename in pdf_dict:
-                    pdf_dict[original_basename].append(file)
+                if original_basename in self.pdf_dict:
+                    self.pdf_dict[original_basename].append(file)
                 # when filename is not part of dict yet, add it as new entry
                 else:
-                    pdf_dict[original_basename] = [file]
+                    self.pdf_dict[original_basename] = [file]
 
     def _checkDuplicates(self):
         for key,value in self.pdf_dict.items():
@@ -82,31 +81,41 @@ class pdfDuplicates():
         if not self.duplicate_exist:
             sys.exit("No duplicate PDF-Files, programm aborted")
 
-    # Create duplicate Directory or check if already existing
-    duplicate_path = os.path.join(self.destination, "Duplikate_pdfs")
-    if not os.path.exists(duplicate_path):
-        os.makedirs(duplicate_path)
+    def _moveDuplicates(self):
+        # Create duplicate Directory or check if already existing
+        duplicate_path = os.path.join(self.destination, "Duplikate_pdfs")
+        if not os.path.exists(duplicate_path):
+            os.makedirs(duplicate_path)
 
-    # Iterate over pdf_dict and ask user whether duplicate files should be moved then
-    move_duplicates = int(input("Do you want to move the duplicates to a seperate folder now? Insert 1 for YES and 0 for NO: "))
-    if move_duplicates == 1:
-        for key in pdf_dict.keys():
-            if len(pdf_dict[key]) > 1:
-                # determining largest file of lists
-                largest_file = max(pdf_dict[key], key=lambda x: os.path.getsize(x))
-                print(f"der größte ist: {largest_file}")
-                # moving the smaller files to dup folder
-                for smaller in pdf_dict[key]:
-                    if smaller != largest_file:
-                        shutil.move(smaller, os.path.join(duplicate_path, smaller))
-                        print(f"Es wurde File {smaller} verschoben") 
-        print(f"Duplicate pdf files moved to : {duplicate_path}")
-    else:
-        print("Duplicate files NOT moved")
+        # Iterate over pdf_dict and ask user whether duplicate files should be moved then
+        move_duplicates = int(input("Do you want to move the duplicates to a seperate folder now? Insert 1 for YES and 0 for NO: "))
+        if move_duplicates == 1:
+            for key in self.pdf_dict.keys():
+                if len(self.pdf_dict[key]) > 1:
+                    # determining largest file of lists
+                    largest_file = max(self.pdf_dict[key], key=lambda x: os.path.getsize(x))
+                    print(f"der größte ist: {largest_file}")
+                    # moving the smaller files to dup folder
+                    for smaller in self.pdf_dict[key]:
+                        if smaller != largest_file:
+                            shutil.move(smaller, os.path.join(duplicate_path, smaller))
+                            print(f"Es wurde File {smaller} verschoben") 
+            print(f"Duplicate pdf files moved to : {duplicate_path}")
+        else:
+            print("Duplicate files NOT moved")
     #TODO: Maybe add Date of creation to duplicate folder, or log file which tells when programm last ran
     #TODO: Add Exception-Handling?
     #TODO: Add logging logic
 
+    def run(self):
+        self._changeDir()
+        self._prepareRegex()
+        self._appendPDFs()
+        self._doSorting()
+        self._checkDuplicates()
+        self._moveDuplicates()
+
 if __name__ == '__main__':
     run = pdfDuplicates()
+    run.run() 
     
