@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 from pathlib import Path
 import argparse
+import base64
+import mimetypes
 
 from langchain.tools import tool
 from langchain.agents import create_agent
@@ -18,12 +20,22 @@ Using the web search tool, search the web for recipes that can be made with the 
 
 Return recipe suggestions and eventually the recipe instructions to the user, if requested.
 
+In case of an image, first answer with the recognized ingredients like: 
+
+The following ingredients are in the image:
+-> cheese, tomato, pepper, salt, salmon
 """
 
 
-def encode_b64():
-    pass
-    #img_b64 = base64.b64encode(
+def encode_b64(image_path: Path) -> str:
+    try:
+        if not image_path.exists():
+            raise FileNotFoundError(f"Image not found at: {image_path}")
+        return base64.b64encode(image_path.read_bytes()).decode("utf-8")
+    except TypeError as e:
+        print(f"Error in encoding: {e}")
+        raise e
+        
 
 
 def env_setup():
@@ -42,9 +54,9 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--prompt",
                         type=str, help="Insert specific prompt")
-    parser.add_argument("-i", "--image", type=pathlib.Path, help="Path to an image")
-    #TODO: image path handling yet to implement
+    parser.add_argument("-i", "--image", type=Path, help="Path to an image")
     args = parser.parse_args()
+
 
     # setup environment
     env_setup()
@@ -59,11 +71,20 @@ def main():
     
     config = {"configurable": {"thread_id": "1"}} 
 
-    if args.prompt is None or not args.prompt.strip():
+    if args.image:
+        mime_type, _ = mimetypes.guess_type(args.image) # e.g. image/jpeg image/png
+        img_b64 = encode_b64(args.image)
+        question = HumanMessage(content=[
+            {"type": "text", "text": "What can i cook from the ingredients shown in this image?"},
+            {"type": "image", "base64": img_b64, "mime_type": mime_type},
+            ]
+            )
+    elif args.prompt is None or not args.prompt.strip():
         question = HumanMessage(content=[
             {"type": "text", "text": "What can i cook from chicken, rice and curry ?"},
             ]
             )
+
     else:
         question = HumanMessage(content=[
             {"type": "text", "text": args.prompt},
